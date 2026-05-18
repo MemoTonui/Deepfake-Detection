@@ -5,11 +5,7 @@ import { useAuth } from '@/services/auth'
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    {
-      path: '/',
-      redirect: '/dashboard',
-      meta: { requiresAuth: true },
-    },
+    // ── Public routes (no sidebar/topbar) ──────────────────────────
     {
       path: '/login',
       name: 'Login',
@@ -22,38 +18,48 @@ const router = createRouter({
       component: () => import('@/views/Authentication/SignUp.vue'),
       meta: { requiresAuth: false },
     },
+
+    // ── Authenticated routes (wrapped in AppLayout) ────────────────
     {
-      path: '/dashboard',
-      name: 'Dashboard',
-      component: () => import('@/components/DashboardLayout.vue'),
+      path: '/',
+      component: () => import('@/layouts/AppLayout.vue'),
       meta: { requiresAuth: true },
+      children: [
+        {
+          path: '',
+          redirect: '/dashboard',
+        },
+        {
+          path: 'dashboard',
+          name: 'Dashboard',
+          component: () => import('@/components/DashboardLayout.vue'),
+        },
+        {
+          path: 'cases',
+          name: 'Cases',
+          component: () => import('@/views/Cases.vue'),
+        },
+        {
+          path: 'cases/:id',
+          name: 'CaseDetail',
+          component: () => import('@/views/CaseDetail.vue'),
+          props: true,
+        },
+        {
+          path: 'casefiles',
+          name: 'CaseFiles',
+          component: () => import('@/views/CaseFiles.vue'),
+        },
+        {
+          path: 'casefiles/:id',
+          name: 'CaseFileDetail',
+          component: () => import('@/views/CaseFileDetail.vue'),
+          props: true,
+        },
+      ],
     },
-    {
-      path: '/cases',
-      name: 'Cases',
-      component: () => import('@/views/Cases.vue'),
-      meta: { requiresAuth: true },
-    },
-    {
-      path: '/cases/:id',
-      name: 'CaseDetail',
-      component: () => import('@/views/CaseDetail.vue'),
-      meta: { requiresAuth: true },
-      props: true
-    },
-    {
-      path: '/casefiles',
-      name: 'CaseFiles',
-      component: () => import('@/views/CaseFiles.vue'),
-      meta: { requiresAuth: true },
-    },
-    { 
-      path: '/casefiles/:id',
-      name: 'CaseFileDetail',
-      component: () => import('@/views/CaseFileDetail.vue'),
-      meta: { requiresAuth: true }, 
-      props: true
-    },
+
+    // ── Fallback ───────────────────────────────────────────────────
     {
       path: '/:pathMatch(.*)*',
       redirect: '/dashboard',

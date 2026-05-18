@@ -1,8 +1,6 @@
 <!-- src/components/DashboardLayout.vue -->
 <template>
-  <div class="flex h-screen font-poppins bg-slate-100 *:text-xs">
-    <Sidebar />
-
+  <div class="flex h-screen font-poppins bg-slate-50 *:text-xs">
     <main class="flex-1 p-6">
       <!-- Header -->
       <div class="mb-6 border-b pb-4">

@@ -1,25 +1,199 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap');
-
-/* styles.css or your global CSS file */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-::-webkit-scrollbar {
-  width: 7px;
+/* ── Scrollbar ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 7px; }
+::-webkit-scrollbar-track { background: #2D3748; }
+::-webkit-scrollbar-thumb { background: #CBD5E0; }
+::-webkit-scrollbar-thumb:hover { background: #718096; }
+
+/* ── Forensics UI shared components ───────────────────────────────── */
+@layer components {
+
+  .verdict-strip-uncertain {
+  background: linear-gradient(135deg, #1c1a0f 0%, #2d2500 100%);
+  border: 1px solid #78540044;
 }
 
-::-webkit-scrollbar-track{
-  background: #2D3748;
+  /* Typography */
+  .f-eyebrow {
+    @apply block text-[0.6rem] font-bold uppercase tracking-[0.15em] text-slate-400;
+  }
+
+  .f-page-title {
+    @apply text-[2rem] font-extrabold text-slate-900 leading-tight;
+    letter-spacing: -0.035em;
+  }
+
+  .f-section-label {
+    @apply text-[0.6rem] font-bold uppercase tracking-[0.14em] text-slate-400;
+  }
+
+  .f-mono {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  /* Page header divider */
+  .f-topbar {
+    @apply flex items-end justify-between border-b-2 border-slate-900 pb-5 mb-7;
+  }
+
+  /* Spinner */
+  .f-spinner {
+    @apply w-7 h-7 rounded-full border-2 border-slate-200;
+    border-top-color: #0f172a;
+    animation: f-spin 0.7s linear infinite;
+  }
+
+  /* Error bar */
+  .f-error {
+    @apply text-red-600 text-sm px-4 py-3 bg-red-50 border-l-4 border-red-500 rounded;
+  }
+
+  /* Verdict strip (dark, full-bleed) */
+  .verdict-strip-fake {
+    background: #1e0b0b;
+    border-left: 5px solid #dc2626;
+  }
+  .verdict-strip-real {
+    background: #031209;
+    border-left: 5px solid #059669;
+  }
+
+  /* Score bar primitives */
+  .score-track {
+    @apply w-16 h-[5px] bg-slate-100 rounded-full overflow-hidden;
+  }
+  .score-fill-fake {
+    @apply h-full bg-red-500 rounded-full;
+  }
+  .score-fill-real {
+    @apply h-full bg-emerald-500 rounded-full;
+  }
+
+  /* Component bar */
+  .comp-track {
+    @apply flex-1 h-[7px] bg-slate-100 rounded-full overflow-hidden;
+  }
+  .comp-fill {
+    @apply h-full rounded-full;
+    transition: width 0.4s ease;
+  }
+
+  /* Frame micro-bars */
+  .fcb-track {
+    @apply flex-1 h-1 bg-slate-100 rounded-sm overflow-hidden;
+  }
+  .fcb-fill {
+    @apply h-full rounded-sm;
+  }
+
+  /* Hover row (case list rows) */
+  .hover-row {
+    transition: background 0.1s, padding-left 0.15s, padding-right 0.15s;
+  }
+  .hover-row:hover {
+    @apply bg-slate-100 pl-2 pr-2;
+  }
+  .hover-row:hover .row-arrow {
+    opacity: 1;
+    transform: translateX(5px);
+  }
+  .row-arrow {
+    opacity: 0;
+    transition: opacity 0.15s, transform 0.2s;
+    @apply text-slate-400;
+  }
+
+  /* Table */
+  .f-table {
+    @apply w-full text-sm;
+    border-collapse: collapse;
+  }
+  .f-table thead tr {
+    @apply bg-slate-50;
+  }
+  .f-table th {
+    @apply px-4 py-[0.65rem] text-left text-[0.58rem] font-bold uppercase tracking-[0.12em] text-slate-400 border-b border-slate-200;
+  }
+  .f-table td {
+    @apply px-4 py-[0.85rem] border-b border-slate-100 align-middle text-slate-600;
+  }
+  .f-table tbody tr:last-child td {
+    @apply border-b-0;
+  }
+  .f-table tbody tr:hover td {
+    @apply bg-slate-50;
+  }
+
+  /* Divider grid (1px gaps between cells = seamless bordered grid) */
+  .divider-grid {
+    @apply grid bg-slate-100 border border-slate-200 rounded-lg overflow-hidden;
+    gap: 1px;
+  }
+  .divider-cell {
+    @apply bg-white;
+  }
+
+  /* Verdict badges */
+  .v-badge {
+    @apply text-[0.6rem] font-bold uppercase tracking-widest px-2.5 py-1 rounded-sm;
+  }
+  .v-badge-fake {
+    @apply bg-red-50 text-red-600;
+  }
+  .v-badge-real {
+    @apply bg-emerald-50 text-emerald-700;
+  }
+
+  /* Status pills */
+  .st-open {
+    @apply bg-emerald-100 text-emerald-700 text-[0.55rem] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-sm;
+  }
+  .st-closed {
+    @apply bg-slate-100 text-slate-500 text-[0.55rem] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-sm;
+  }
+
+  /* Primary button */
+  .btn-primary {
+    @apply bg-slate-900 text-white text-xs font-semibold px-5 py-2.5 rounded-md hover:bg-slate-700 transition-colors;
+  }
+
+  /* Ghost button */
+  .btn-ghost {
+    @apply text-xs font-semibold text-slate-600 border border-slate-200 px-4 py-2 rounded-md hover:bg-slate-50 transition-colors;
+  }
+
+  /* Form input */
+  .f-input {
+    @apply w-full px-3 py-2 border border-slate-200 rounded-md text-sm font-medium text-slate-900 outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10;
+    font-family: 'Poppins', sans-serif;
+  }
+  .f-textarea {
+    @apply f-input resize-y;
+    min-height: 80px;
+  }
+
+  /* Modal overlay */
+  .f-modal-veil {
+    @apply fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm;
+  }
+  .f-modal {
+    @apply bg-white rounded-xl p-8 w-full shadow-2xl;
+  }
+
+  /* Card */
+  .f-card {
+    @apply bg-white border border-slate-200 rounded-xl p-6 shadow-sm;
+  }
 }
 
-::-webkit-scrollbar-thumb{
-  background: #CBD5E0;
-}
-
-::-webkit-scrollbar-thumb:hover{
-  background: #718096;
+/* ── Keyframes (must be outside @layer) ───────────────────────────── */
+@keyframes f-spin {
+  to { transform: rotate(360deg); }
 }

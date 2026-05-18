@@ -51,6 +51,7 @@ export class CaseFile {
   caseNumber: string;
   caseDescription: string;
   caseName: string;
+  fileName: string;
   uploadedBy: string;
   type: CaseFileType;
   uploadDate: string;
@@ -61,37 +62,56 @@ export class CaseFile {
   result?: EnhancedResult;
 
   constructor(data?: any) {
-    this.id = data?.id ?? data?.evidence_id ?? "";
-    this.caseNumber = data?.caseNumber ?? data?.case_id ?? "";
+    this.id              = data?.id ?? data?.evidence_id ?? "";
+    this.caseNumber      = data?.caseNumber ?? data?.case_id ?? "";
     this.caseDescription = data?.caseDescription ?? data?.description ?? "";
-    this.caseName = data?.caseName ?? data?.case_name ?? "";
-    this.uploadedBy = data?.submittedBy ?? data?.submitting_party ?? data?.uploadedBy ?? "";
-    this.type = data?.evidence_type ?? data?.type ?? "video";
-    
+    this.caseName        = data?.caseName ?? data?.case_name ?? "";
+    this.fileName        = data?.fileName ?? data?.file_name ?? "";
+    this.uploadedBy      = data?.uploadedBy ?? data?.submittedBy ?? data?.submitting_party ?? "";
+    this.type            = data?.evidence_type ?? data?.type ?? "video";
+
     // Handle date
-    const dateValue = data?.processed_at ?? data?.uploadDate;
-    this.uploadDate = dateValue
+    const dateValue  = data?.processed_at ?? data?.uploadDate;
+    this.uploadDate  = dateValue
       ? new Date(dateValue).toISOString().split("T")[0]
       : new Date().toISOString().split("T")[0];
-    
-    // ✅ CRITICAL: Properly parse is_fake from result object
+
+    // ── isFake resolution order ──────────────────────────────────────────────
+    //
+    //  Source          Field name        When present
+    //  ──────────────  ────────────────  ─────────────────────────────────────
+    //  detail API      data.result.is_fake   /api/casefiles/:id  (nested)
+    //  list API        data.isFake           /api/casefiles/     (camelCase)
+    //  list API old    data.is_fake          legacy snake_case
+    //  fallback        false
+    //
     if (data?.result?.is_fake !== undefined) {
+      // Detail endpoint — verdict is nested inside result object
       this.isFake = Boolean(data.result.is_fake);
+    } else if (data?.isFake !== undefined) {
+      // List endpoint — backend returns camelCase isFake at top level
+      this.isFake = Boolean(data.isFake);
     } else if (data?.is_fake !== undefined) {
+      // Legacy / snake_case fallback
       this.isFake = Boolean(data.is_fake);
     } else {
       this.isFake = false;
     }
-    
-    this.confidence = data?.result?.confidence ?? data?.confidence;
-    this.status = data?.status ?? "complete";
-    this.resultsLink = data?.heatmap_url ?? data?.result?.heatmap_url ?? data?.resultsLink;
-    
-    // Store full enhanced result
+
+    // ── confidence resolution order ──────────────────────────────────────────
+    // Same pattern: detail API nests it in result, list API returns it flat.
+    this.confidence =
+      data?.result?.confidence  ??   // detail endpoint
+      data?.confidence          ??   // list endpoint (number)
+      undefined;
+
+    this.status      = data?.status ?? "complete";
+    this.resultsLink = data?.result?.heatmap_url ?? data?.heatmap_url ?? data?.resultsLink;
+
+    // Store full enhanced result (only present on detail endpoint)
     this.result = data?.result;
   }
 
-  // Helpers
   isComplete(): boolean {
     return this.status === "complete";
   }
@@ -99,15 +119,15 @@ export class CaseFile {
   hasEnhancedData(): boolean {
     return !!(this.result?.components && this.result?.frame_analysis);
   }
-  
+
   getVerdictLabel(): string {
-    return this.isFake ? 'DEEPFAKE' : 'AUTHENTIC';
+    return this.isFake ? "DEEPFAKE" : "AUTHENTIC";
   }
-  
-  getConfidenceLevel(): 'high' | 'moderate' | 'low' {
-    if (!this.confidence) return 'low';
-    if (this.confidence > 0.7) return 'high';
-    if (this.confidence > 0.5) return 'moderate';
-    return 'low';
+
+  getConfidenceLevel(): "high" | "moderate" | "low" {
+    if (!this.confidence) return "low";
+    if (this.confidence > 0.7) return "high";
+    if (this.confidence > 0.5) return "moderate";
+    return "low";
   }
 }
