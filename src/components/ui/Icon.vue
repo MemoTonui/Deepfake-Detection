@@ -1,7 +1,7 @@
 <!-- src/components/ui/Icon.vue -->
 <script setup lang="ts">
 import * as icons from '@/utils/icons'
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 const props = defineProps({
   name: {
@@ -13,7 +13,7 @@ const props = defineProps({
     type: String,
     default: '5'
   },
-  class: {
+  customClass: {
     type: String,
     default: ''
   }
@@ -23,8 +23,8 @@ const iconComponent = computed(() => icons[props.name as keyof typeof icons])
 </script>
 
 <template>
-  <component 
-    :is="iconComponent" 
-    :class="`w-${size} h-${size} ${class}`"
+  <component
+    :is="iconComponent"
+    :class="[`w-${size}`, `h-${size}`, customClass]"
   />
 </template>
