@@ -310,9 +310,8 @@ const showCreateModal = ref(false)
 const creating        = ref(false)
 const createError     = ref<string | null>(null)
 const newCase         = ref({ case_number: '', case_name: '', description: '' })
-
+const activeStatus = ref<StatusFilter>('all')
 const search       = ref('')
-const activeStatus = ref<'all' | 'open' | 'closed'>('all')
 const sortBy       = ref<'created_at' | 'case_number' | 'evidence_count' | 'case_name'>('created_at')
 const sortAsc      = ref(false)
 const currentPage  = ref(1)
@@ -329,9 +328,12 @@ const stats = computed(() => [
   { label: 'Total evidence',    val: cases.value.reduce((a, c) => a + (c.evidence_count || 0), 0), color: 'text-sky-600' },
 ])
 
-const statusTabs = computed(() => [
-  { val: 'all',    label: 'All',    count: cases.value.length },
-  { val: 'open',   label: 'Open',   count: cases.value.filter(c => c.status === 'open').length },
+type StatusFilter = 'all' | 'open' | 'closed'
+
+
+const statusTabs = computed<{ val: StatusFilter; label: string; count: number }[]>(() => [
+  { val: 'all', label: 'All', count: cases.value.length },
+  { val: 'open', label: 'Open', count: cases.value.filter(c => c.status === 'open').length },
   { val: 'closed', label: 'Closed', count: cases.value.filter(c => c.status !== 'open').length },
 ])
 

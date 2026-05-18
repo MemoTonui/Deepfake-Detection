@@ -42,14 +42,15 @@ watch(
 );
 
 // Function to handle navigation between OTP input fields
-const handleOtpInput = (e: InputEvent) => {
-  const target = e.target as HTMLInputElement;
+const handleOtpInput = (e: Event) => {
+  const target = e.target as HTMLInputElement
+
   if (target.value && target.nextElementSibling) {
-    (target.nextElementSibling as HTMLInputElement).focus();
-  } else if (e.inputType === 'deleteContentBackward' && target.previousElementSibling) {
-    (target.previousElementSibling as HTMLInputElement).focus();
+    (target.nextElementSibling as HTMLInputElement).focus()
+  } else if ((e as InputEvent).inputType === 'deleteContentBackward' && target.previousElementSibling) {
+    (target.previousElementSibling as HTMLInputElement).focus()
   }
-};
+}
 
 // Function to handle pasting of OTP values into input fields
 const handlePaste = (e: ClipboardEvent) => {
@@ -85,7 +86,7 @@ const handlePaste = (e: ClipboardEvent) => {
         <template v-for="fieldIndex in fields" :key="fieldIndex">
           <input
             v-model="data[fieldIndex - 1]"
-            ref="firstInputEl"
+            :ref="el => firstInputEl[fieldIndex - 1] = el as HTMLInputElement"
             type="text"
             maxlength="1"
             class="border border-slate-200 rounded-xs w-10 h-10 text-center"

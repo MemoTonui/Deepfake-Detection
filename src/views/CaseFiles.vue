@@ -128,7 +128,6 @@
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 import { CaseFile } from '@/services/caseFile'
-import Sidebar from '@/components/Sidebar.vue'
 
 const caseFiles = ref<CaseFile[]>([])
 const loading = ref(true)

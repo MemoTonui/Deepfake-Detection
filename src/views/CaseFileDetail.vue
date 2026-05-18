@@ -276,7 +276,6 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
-import Sidebar from '@/components/Sidebar.vue'
 
 const route    = useRoute()
 const caseFile = ref<any>(null)

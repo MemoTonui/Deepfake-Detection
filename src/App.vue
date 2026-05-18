@@ -4,10 +4,7 @@
 
 <script setup lang="ts" >
 import { RouterView } from 'vue-router'
-import { useAuth } from '@/services/auth'
 
-// Initialize auth state
-const { user } = useAuth()
 </script>
 
 <style>

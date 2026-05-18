@@ -66,7 +66,6 @@
 import { ref, onMounted } from 'vue'
 import { useAuth } from '@/services/auth'
 import { fetchStats, fetchRecentCases } from '@/services/dashboard'
-import Sidebar from '@/components/Sidebar.vue'
 
 const { user } = useAuth()
 

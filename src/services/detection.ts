@@ -48,6 +48,7 @@ export interface DetectionResult {
     frame_analysis: FrameAnalysis[]
     frame_thumbnails: string[]
     confidence_stats: ConfidenceStats
+    anomaly_chart_url?:string
     confusion_matrix: ConfusionMatrix
     metadata: {
       frames_processed: number

@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import logo from '../../assets/aires logo.svg';
 
 const router = useRouter();
-const email = ref('johndoe@mail.com');
 
 function complete() {
   router.push('/');

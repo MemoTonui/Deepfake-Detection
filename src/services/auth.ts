@@ -7,6 +7,8 @@ interface User {
   role: string
   token: string
   refresh_token: string
+  displayName?: string
+  photoURL?: string
 }
 
 const user = ref<User | null>(null)
@@ -34,6 +36,7 @@ export function useAuth() {
         role: data.role,
         token: data.token,
         refresh_token: data.refresh_token,
+        
       }
 
       // Store tokens in localStorage
