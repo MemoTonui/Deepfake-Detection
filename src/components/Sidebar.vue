@@ -43,7 +43,6 @@ import {
   FolderIcon as CasesIcon,
   DocumentMagnifyingGlassIcon as EvidenceIcon,
   ChartBarIcon as ReportsIcon,
-  Cog6ToothIcon as SettingsIcon,
   ArrowRightOnRectangleIcon,
 } from '@heroicons/vue/24/outline'
 import logo from '@/assets/aires logo.svg'

@@ -133,13 +133,12 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
-import axios from 'axios'
 import { useAuth } from '@/services/auth'
 import { ROLE_LABELS, type Role } from '@/services/permissions'
 import { adminUsersService } from '@/services/adminUsers'
 
 const { user } = useAuth()
-const currentUserId = computed(() => user.value?.id)
+const currentUserId = computed(() => user.value?.uid)
 
 const ALL_ROLES: Role[] = ['clerk', 'analyst', 'judge', 'admin']
 
@@ -151,14 +150,15 @@ const creating      = ref(false)
 const createError   = ref<string | null>(null)
 const newUser = reactive({ full_name: '', email: '', role: '', badge_number: '', password: '' })
 
-const roleStats = computed(() => [
+const roleStats = computed<
+  { role: Role; count: number; color: string }[]
+>(() => [
   { role: 'clerk',   count: users.value.filter(u => u.role === 'clerk').length,   color: 'text-slate-700' },
   { role: 'analyst', count: users.value.filter(u => u.role === 'analyst').length, color: 'text-sky-600' },
   { role: 'judge',   count: users.value.filter(u => u.role === 'judge').length,   color: 'text-amber-600' },
   { role: 'admin',   count: users.value.filter(u => u.role === 'admin').length,   color: 'text-red-600' },
 ])
 
-const authHeader = () => ({ Authorization: `Bearer ${localStorage.getItem('token')}` })
 
 async function fetchUsers() {
   try {

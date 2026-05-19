@@ -1,7 +1,7 @@
 // src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuth } from '@/services/auth'
-import { roleHasPermission, type Permission } from '@/services/permissions'
+import { roleHasPermission,type Role, type Permission } from '@/services/permissions'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -85,7 +85,7 @@ router.beforeEach((to, _from, next) => {
   }
 
   const required = to.meta.permission as Permission | undefined
-  if (required && !roleHasPermission(user.value?.role, required)) {
+  if (required && !roleHasPermission(user.value?.role as Role |undefined, required)) {
     return next('/forbidden')
   }
 

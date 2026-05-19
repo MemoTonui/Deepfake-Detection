@@ -174,7 +174,7 @@ const deepfakeCount = computed(() =>
   (caseData.value?.evidence || []).filter((e: any) => e.is_fake).length
 )
 import { usePermissions } from '@/composables/usePermissions'
-const { canUploadEvidence, canRunAnalysis } = usePermissions()
+const { canUploadEvidence } = usePermissions()
 
 async function fetchCase() {
   try {
