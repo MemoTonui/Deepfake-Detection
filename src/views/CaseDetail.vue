@@ -25,7 +25,10 @@
               :class="caseData.status === 'open' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'">
               {{ caseData.status }}
             </span>
-            <button @click="showUploadModal = true" class="px-4 py-2 bg-sky-600 text-white font-medium rounded-md hover:bg-sky-700 transition-colors">
+            <button
+            v-if="canUploadEvidence"
+            @click="showUploadModal = true" 
+            class="px-4 py-2 bg-sky-600 text-white font-medium rounded-md hover:bg-sky-700 transition-colors">
               + Upload Evidence
             </button>
           </div>
@@ -55,7 +58,7 @@
         <div class="bg-white rounded-lg shadow-md mb-6">
           <div class="flex justify-between items-center px-5 py-4 border-b border-gray-100">
             <h2 class="font-semibold text-gray-800">Evidence Files</h2>
-            <button @click="showUploadModal = true" class="text-sky-600 hover:underline font-medium">+ Upload</button>
+            <button v-if="canUploadEvidence" @click="showUploadModal = true" class="text-sky-600 hover:underline font-medium">+ Upload</button>
           </div>
           <div v-if="caseData.evidence?.length">
             <table class="min-w-full divide-y divide-gray-100">
@@ -104,25 +107,8 @@
           </div>
         </div>
 
-        <!-- Activity log ─────────────────────────────────────────────────────
-          Three fixes applied here, nothing else changed:
+        <!-- Activity log ----->
 
-          FIX 1 — :key
-            Was:  :key="log.created_at"
-            Why broken: created_at doesn't exist on normalised logs — all keys
-            resolve to undefined, Vue can't track rows, duplicates appear.
-            Fix:  compound key from action + user_email + timestamp + index.
-
-          FIX 2 — v-if on details
-            Was:  v-if="log.details"
-            Why broken: falsy for empty string "", so nothing ever rendered.
-            Fix:  v-if="detailsText(log.details)" — only hides truly empty.
-
-          FIX 3 — rendering details
-            Was:  {{ log.details }}
-            Why broken: if details is a dict {}, Vue prints "[object Object]".
-            Fix:  {{ detailsText(log.details) }} — flattens dicts to strings.
-        ──────────────────────────────────────────────────────────────────── -->
         <div class="bg-white rounded-lg shadow-md">
           <div class="px-5 py-4 border-b border-gray-100">
             <h2 class="font-semibold text-gray-800">Activity Log</h2>
@@ -187,6 +173,8 @@ const showUploadModal = ref(false)
 const deepfakeCount = computed(() =>
   (caseData.value?.evidence || []).filter((e: any) => e.is_fake).length
 )
+import { usePermissions } from '@/composables/usePermissions'
+const { canUploadEvidence, canRunAnalysis } = usePermissions()
 
 async function fetchCase() {
   try {

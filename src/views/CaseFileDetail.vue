@@ -14,7 +14,9 @@
           <h1 class="text-[2rem] font-bold text-slate-700 leading-tight mb-1" style="letter-spacing:-0.035em">Case File Details</h1>
           <p class="text-slate-400">Forensic evidence analysis report</p>
         </div>
-        <button @click="exportReport"
+        <button
+        v-if="canGenerateReports"
+        @click="exportReport"
           class="bg-sky-700 text-white font-semibold px-5 py-2.5 rounded-md hover:bg-sky-500 transition-colors shrink-0">
           ↓ Export PDF
         </button>
@@ -281,20 +283,22 @@ const route    = useRoute()
 const caseFile = ref<any>(null)
 const loading  = ref(true)
 const error    = ref<string | null>(null)
+import { usePermissions } from '@/composables/usePermissions'
+const { canGenerateReports } = usePermissions()
 
 // Three-tier verdict computed classes
 const verdictStripClass = computed(() => {
   const v = caseFile.value?.verdict
-  if (v === 'DEEPFAKE')   return 'verdict-strip-fake'
-  if (v === 'UNCERTAIN')  return 'verdict-strip-uncertain'
-  return 'verdict-strip-real'
+  if (v === 'DEEPFAKE')   return 'bg-red-50 border-2 border-red-200'
+  if (v === 'UNCERTAIN')  return 'bg-amber-50 border-2 border-amber-200'
+  return 'bg-emerald-50 border-2 border-emerald-200'
 })
 
 const verdictTextClass = computed(() => {
   const v = caseFile.value?.verdict
-  if (v === 'DEEPFAKE')   return 'text-red-300'
-  if (v === 'UNCERTAIN')  return 'text-amber-300'
-  return 'text-emerald-300'
+  if (v === 'DEEPFAKE')   return 'text-red-600'
+  if (v === 'UNCERTAIN')  return 'text-amber-600'
+  return 'text-emerald-600'
 })
 
 const hasEnhancedData = computed(() =>

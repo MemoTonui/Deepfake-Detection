@@ -3,7 +3,7 @@
     <div class="w-full max-w-md px-8 py-8 bg-white rounded-md shadow-md">
 
       <div class="text-center mb-6">
-        <img class="h-10 mx-auto mb-4" :src="logo" alt="AIRES Logo" />
+        <img class="h-22 text-center mx-10 mb-3" :src="logo" alt="AIRES Logo" />
         <h1 class="text-xl font-bold text-gray-800">Sign in to your account</h1>
         <p class="mt-1 text-xs text-gray-500">Authenticate to access the deepfake detection system</p>
       </div>

@@ -12,6 +12,7 @@
           <h1 class="text-[2rem] font-bold text-slate-700 leading-tight" style="letter-spacing:-0.035em">Cases</h1>
         </div>
         <button
+            v-if="canCreateCase"
           @click="showCreateModal = true"
           class="flex items-center gap-1.5 bg-sky-700 text-slate-50 font-semibold px-5 py-2.5 rounded-md hover:bg-sky-500 transition-colors"
         >
@@ -249,7 +250,7 @@
               <input
                 v-model="newCase.case_number"
                 placeholder="CASE-2025-001"
-                class="w-full px-3 py-2 border border-slate-200 rounded-md text-slate-700 font-medium outline-none focus:border-slate-700 focus:ring-2 focus:ring-slate-700/10 font-poppins"
+                class="w-full px-3 py-2 border text-xs border-slate-200 rounded-md text-slate-700 font-medium outline-none focus:border-slate-700 focus:ring-2 focus:ring-slate-700/10 font-poppins"
               />
             </div>
             <div>
@@ -259,7 +260,7 @@
               <input
                 v-model="newCase.case_name"
                 placeholder="Brief title…"
-                class="w-full px-3 py-2 border border-slate-200 rounded-md text-slate-700 font-medium outline-none focus:border-slate-700 focus:ring-2 focus:ring-slate-700/10 font-poppins"
+                class="w-full px-3 py-2 border text-xs border-slate-200 rounded-md text-slate-700 font-medium outline-none focus:border-slate-700 focus:ring-2 focus:ring-slate-700/10 font-poppins"
               />
             </div>
             <div>
@@ -268,22 +269,22 @@
                 v-model="newCase.description"
                 rows="3"
                 placeholder="Details and context…"
-                class="w-full px-3 py-2 border border-slate-200 rounded-md text-slate-700 outline-none focus:border-slate-700 focus:ring-2 focus:ring-slate-700/10 resize-none font-poppins"
+                class="w-full px-3 py-2 border text-xs border-slate-200 rounded-md text-slate-700 outline-none focus:border-slate-700 focus:ring-2 focus:ring-slate-700/10 resize-none font-poppins"
               ></textarea>
             </div>
             <div v-if="createError" class="text-red-600 text-[0.7rem] px-3 py-2 bg-red-50 border border-red-200 rounded-md">
               {{ createError }}
             </div>
           </div>
-          <div class="flex justify-end gap-3 mt-6">
+          <div class="flex justify-between gap-3 mt-6">
             <button
               @click="showCreateModal = false"
-              class="px-4 py-2 text-slate-600 border border-slate-200 rounded-md hover:bg-slate-50"
+              class="px-4 py-2 text-xs text-slate-600 border border-slate-200 rounded-md hover:bg-slate-50"
             >Cancel</button>
             <button
               @click="createCase"
               :disabled="creating || !newCase.case_number.trim() || !newCase.case_name.trim()"
-              class="px-5 py-2 font-semibold bg-slate-700 text-white rounded-md hover:bg-slate-800 disabled:opacity-40 transition-colors"
+              class="px-5 py-2 text-xs font-semibold bg-slate-700 text-white rounded-md hover:bg-slate-800 disabled:opacity-40 transition-colors"
             >
               {{ creating ? 'Creating…' : 'Create' }}
             </button>
@@ -299,6 +300,8 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import { usePermissions } from '@/composables/usePermissions'
+const { canCreateCase } = usePermissions()
 
 const router = useRouter()
 

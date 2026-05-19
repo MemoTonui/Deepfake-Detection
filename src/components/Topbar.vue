@@ -82,7 +82,7 @@ const showNotifications = ref(false)
 
 const displayName = computed(() => {
   if (!user.value) return 'Guest'
-  return user.value.uid || user.value.email?.split('@')[0] || 'User'
+  return user.value.email?.split('@')[0] || 'User'
 })
 
 const userRole = computed(() => user.value?.role || 'analyst')

@@ -1,6 +1,7 @@
 // src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuth } from '@/services/auth'
+import { roleHasPermission, type Permission } from '@/services/permissions'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -56,6 +57,15 @@ const router = createRouter({
           component: () => import('@/views/CaseFileDetail.vue'),
           props: true,
         },
+        {
+          path: '/admin/users',
+          component: () => import('@/views/ManageUsers.vue'),
+          meta: { requiresAuth: true, permission: 'manage_users' },
+        },
+        {
+          path: '/forbidden',
+          component: () => import('@/views/Forbidden.vue'),
+        },
       ],
     },
 
@@ -69,15 +79,17 @@ const router = createRouter({
 
 router.beforeEach((to, _from, next) => {
   const { user } = useAuth()
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
-  if (requiresAuth && !user.value) {
-    next('/login')
-  } else if ((to.path === '/login' || to.path === '/register') && user.value) {
-    next('/dashboard')
-  } else {
-    next()
+  if (to.meta.requiresAuth && !user.value) {
+    return next({ path: '/login', query: { redirect: to.fullPath } })
   }
+
+  const required = to.meta.permission as Permission | undefined
+  if (required && !roleHasPermission(user.value?.role, required)) {
+    return next('/forbidden')
+  }
+
+  next()
 })
 
 export default router

@@ -3,7 +3,7 @@
     <div class="w-full max-w-md px-8 py-8 bg-white rounded-md shadow-md">
 
       <div class="text-center mb-6">
-        <img class="h-10 mx-auto mb-4" :src="logo" alt="AIRES Logo" />
+        <img class="h-22 text-center mx-10 mb-3" :src="logo" alt="AIRES Logo" />
         <h1 class="text-xl font-bold text-gray-800">Create your account</h1>
         <p class="mt-1 text-xs text-gray-500">Register to access the deepfake detection system</p>
       </div>
@@ -21,7 +21,7 @@
             type="text"
             required
             placeholder="Jane Doe"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 text-gray-800 placeholder-gray-400"
+            class="block w-full px-3 text-xs py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 text-gray-800 placeholder-gray-400"
           />
         </div>
 
@@ -32,7 +32,7 @@
             type="email"
             required
             placeholder="you@example.com"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 text-gray-800 placeholder-gray-400"
+            class="block w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 text-gray-800 placeholder-gray-400"
           />
         </div>
 
@@ -41,11 +41,11 @@
           <select
             v-model="form.role"
             required
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 text-gray-800 bg-white"
+            class="block w-full px-3 py-2 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 text-gray-800 bg-white"
           >
             <option value="">Select your role</option>
             <option value="judge">Judge</option>
-            <option value="lawyer">Lawyer</option>
+            <option value="clerk">Clerk</option>
             <option value="analyst">Forensic Analyst</option>
           </select>
         </div>
@@ -57,7 +57,7 @@
             type="text"
             required
             placeholder="e.g. KE-2024-0091"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 text-gray-800 placeholder-gray-400"
+            class="block w-full px-3 py-2 border text-xs border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 text-gray-800 placeholder-gray-400"
           />
         </div>
 
@@ -70,7 +70,7 @@
               required
               minlength="8"
               placeholder="Min. 8 characters"
-              class="block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 text-gray-800 pr-9"
+              class="block w-full px-3 py-2 border text-xs border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 text-gray-800 pr-9"
             />
             <button type="button" @click="showPwd = !showPwd" class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-gray-600">
               <svg v-if="!showPwd" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -91,7 +91,7 @@
             type="password"
             required
             placeholder="Re-enter password"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 text-gray-800"
+            class="block w-full text-xs px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 text-gray-800"
             :class="pwMismatch ? 'border-red-400 focus:ring-red-400 focus:border-red-400' : ''"
           />
           <p v-if="pwMismatch" class="mt-1 text-red-500" style="font-size:0.65rem">Passwords do not match</p>

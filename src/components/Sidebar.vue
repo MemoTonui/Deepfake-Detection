@@ -3,7 +3,7 @@
 
     <!-- Logo -->
     <div class="flex items-center justify-center h-16 border-b border-slate-800 px-5">
-      <img class="h-7" :src="logo" alt="AIRES Logo" />
+      <img class="h-20" :src="logo" alt="AIRES Logo" />
     </div>
 
     <!-- Nav -->
@@ -55,8 +55,7 @@ const navigation = [
   { name: 'Dashboard',      to: '/dashboard', icon: DashboardIcon },
   { name: 'Cases',          to: '/cases',     icon: CasesIcon     },
   { name: 'Evidence Files', to: '/casefiles', icon: EvidenceIcon  },
-  { name: 'Reports',        to: '/reports',   icon: ReportsIcon   },
-  { name: 'Settings',       to: '/settings',  icon: SettingsIcon  },
+  { name: 'Users',        to: '/admin/users',   icon: ReportsIcon   },
 ]
 
 async function handleLogout() {
